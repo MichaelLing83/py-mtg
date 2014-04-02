@@ -3,6 +3,7 @@ import encodings.utf_8
 
 class MtgDataBase:
     '''
+    An database containing all MTG cards.
     '''
     def __init__(self, json_file_name):
         '''
@@ -20,10 +21,18 @@ class MtgDataBase:
                 if card.get("name") == name:
                     return card
         raise ValueError('Card name "%s" is not found!' % name)
+    
+    def print_card(self, card):
+        '''
+        Return a string representation of a card (dict).
+        '''
+        s = ""
+        for key in card.keys():
+            if key != "foreignNames":
+                s += "%s:\t%s\n" % (key, card.get(key))
+        return s
 
 if __name__ == '__main__':
     mtgDb = MtgDataBase("../data/AllSets-x.json")
     card = mtgDb.get_card_by_name("Acidic Slime")
-    for key in card.keys():
-        if key != "foreignNames":
-            print("%s:\t%s" % (key, card.get(key)))
+    print(mtgDb.print_card(card))
