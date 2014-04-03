@@ -1,6 +1,4 @@
 ﻿import json
-import encodings.utf_8
-import sys
 
 class MtgDataBase:
     '''
@@ -17,15 +15,14 @@ class MtgDataBase:
             for card in self.__rawMtgDb.get(set_name).get("cards"):
                 if card.get("name") not in self.__mtgDb.keys():
                     self.__mtgDb[card.get("name")] = card
+        self.__all_card_names = list(self.__mtgDb.keys())
+        self.__all_card_names.sort()
     
     def get_all_card_names(self):
         '''
         Return a list of all card names.
         '''
-        return self.__mtgDb.keys()
-    
-    def get_db(self):
-        return self.__mtgDb
+        return self.__all_card_names
     
     def get_card_by_name(self, name):
         '''
@@ -44,8 +41,3 @@ class MtgDataBase:
             #else:
                 #sys.displayhook(card.get(key))
         return s
-
-if __name__ == '__main__':
-    mtgDb = MtgDataBase("../data/AllSets-x.json")
-    card = mtgDb.get_card_by_name("Acidic Slime")
-    print(mtgDb.print_card(card))
