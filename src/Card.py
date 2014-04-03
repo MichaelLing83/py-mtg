@@ -39,3 +39,11 @@ class Card:
                 if language in language_name.get("language"):
                     return language_name.get("name")
         raise ValueError("%s name is not found for card %s" % (language, self.__card.get("name")))
+    
+    def is_creature(self):
+        '''
+        Test if this is a creature.
+        
+        @return (bool): True or False
+        '''
+        return "Creature" in self.__card.get("type")

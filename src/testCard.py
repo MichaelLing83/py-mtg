@@ -31,6 +31,14 @@ class TestCard(unittest.TestCase):
         card = Card(self.mtgDb, "Acidic Slime")
         self.assertEqual(card.name(), "Acidic Slime")
         self.assertEqual(card.name(language="Chinese Simplified"), "酸液黏菌")
+    
+    def test_is_creature(self):
+        '''
+        Verify that Card can test if it's a creature.
+        '''
+        self.assertEqual(Card(self.mtgDb, "Acidic Slime").is_creature(), True)
+        self.assertEqual(Card(self.mtgDb, "Honor of the Pure").is_creature(), False)
+        
 
 if __name__ == '__main__':
     unittest.main()

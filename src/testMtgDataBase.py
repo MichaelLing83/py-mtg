@@ -31,6 +31,14 @@ class TestMtgDataBase(unittest.TestCase):
         card = self.mtgDb.get_card_by_name("Acidic Slime")
         self.assertEqual(card.get("cmc"), 5)
     
+    def test_get_card_with_similar_name(self):
+        '''
+        Verify that MtgDataBase can give us a list of cards by a partial name, case insensitive.
+        '''
+        cards = self.mtgDb.get_card_by_similar_name("honor")
+        card = self.mtgDb.get_card_by_name("Honor of the Pure")
+        self.assertIn(card, cards)
+    
     def test_print_card(self):
         '''
         Verify that MtgDataBase can give us a string representing a given card.

@@ -30,6 +30,16 @@ class MtgDataBase:
         '''
         return self.__mtgDb[name]
     
+    def get_card_by_similar_name(self, partial_name):
+        '''
+        Get a list of cards with similar names.
+        '''
+        cards = list()
+        for name in self.get_all_card_names():
+            if partial_name.upper() in name.upper():
+                cards.append(self.get_card_by_name(name))
+        return cards
+    
     def print_card(self, card):
         '''
         Return a string representation of a card (dict).
