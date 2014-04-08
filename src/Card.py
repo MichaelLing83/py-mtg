@@ -40,10 +40,15 @@ class Card:
                     return language_name.get("name")
         raise ValueError("%s name is not found for card %s" % (language, self.__card.get("name")))
     
-    def is_creature(self):
+    def check_type(self, target_type):
         '''
-        Test if this is a creature.
+        Check if this card has given target_type.
+        
+        @target_type (str): type to check against, can be one of:
+            Creature, Artifact, Enchantment, Sorcery, Instant
+            Legendary
+            Zombie, Vampire, Human, Ooze
         
         @return (bool): True or False
         '''
-        return "Creature" in self.__card.get("type")
+        return target_type in self.__card.get("type")

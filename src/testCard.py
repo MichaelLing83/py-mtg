@@ -32,12 +32,16 @@ class TestCard(unittest.TestCase):
         self.assertEqual(card.name(), "Acidic Slime")
         self.assertEqual(card.name(language="Chinese Simplified"), "酸液黏菌")
     
-    def test_is_creature(self):
+    def test_check_type(self):
         '''
-        Verify that Card can test if it's a creature.
+        Verify that Card can test its types.
         '''
-        self.assertEqual(Card(self.mtgDb, "Acidic Slime").is_creature(), True)
-        self.assertEqual(Card(self.mtgDb, "Honor of the Pure").is_creature(), False)
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_type("Vampire"), True)
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_type("Legendary"), True)
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_type("Zombie"), False)
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_type("Creature"), True)
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_type("Artifact"), False)
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_type("Instant"), False)
         
 
 if __name__ == '__main__':
