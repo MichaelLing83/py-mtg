@@ -60,3 +60,21 @@ class Card:
         @return (int): CMC of the card.
         '''
         return self.__card.get("cmc")
+    
+    def check_color(self, color):
+        '''
+        Check if this card has given color.
+        
+        @color (str): color to check, has to be one of following
+            Black, White, Red, Green, Blue, Colorless
+        
+        @return (bool): whether this card has given color.
+        '''
+        if color == "Colorless":
+            return "colors" not in self.__card.keys()
+        elif color in ("Black", "White", "Red", "Blue", "Green"):
+            if "colors" not in self.__card.keys():
+                return False
+            else:
+                return color in self.__card.get("colors")
+        raise ValueError("%s is not a valid color!" % color)

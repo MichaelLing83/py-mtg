@@ -48,6 +48,23 @@ class TestCard(unittest.TestCase):
         Verify that Card can get its CMC.
         '''
         self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").cmc(), 4)
+    
+    def test_check_color(self):
+        '''
+        Verify that Card can check if it has a given color.
+        '''
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_color("Black"), True)
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_color("Red"), True)
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_color("White"), False)
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_color("Blue"), False)
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_color("Green"), False)
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_color("Colorless"), False)
+        self.assertEqual(Card(self.mtgDb, "Wooden Stake").check_color("Black"), False)
+        self.assertEqual(Card(self.mtgDb, "Wooden Stake").check_color("Red"), False)
+        self.assertEqual(Card(self.mtgDb, "Wooden Stake").check_color("White"), False)
+        self.assertEqual(Card(self.mtgDb, "Wooden Stake").check_color("Blue"), False)
+        self.assertEqual(Card(self.mtgDb, "Wooden Stake").check_color("Green"), False)
+        self.assertEqual(Card(self.mtgDb, "Wooden Stake").check_color("Colorless"), True)
         
 
 if __name__ == '__main__':
