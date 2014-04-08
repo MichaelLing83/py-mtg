@@ -42,6 +42,12 @@ class TestCard(unittest.TestCase):
         self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_type("Creature"), True)
         self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_type("Artifact"), False)
         self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").check_type("Instant"), False)
+    
+    def test_cmc(self):
+        '''
+        Verify that Card can get its CMC.
+        '''
+        self.assertEqual(Card(self.mtgDb, "Olivia Voldaren").cmc(), 4)
         
 
 if __name__ == '__main__':

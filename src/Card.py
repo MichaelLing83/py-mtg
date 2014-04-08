@@ -52,3 +52,11 @@ class Card:
         @return (bool): True or False
         '''
         return target_type in self.__card.get("type")
+    
+    def cmc(self):
+        '''
+        Get Converted Mana Cost for this card.
+        
+        @return (int): CMC of the card.
+        '''
+        return self.__card.get("cmc")
