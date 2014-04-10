@@ -1,7 +1,11 @@
-﻿
+﻿import Constants
+
 class Card:
     '''
-    Representing one MTG card.
+    Representing one MTG card. This class should be used as the only card interface, and it should
+    be used to abstract any interface about a card from MtgDataBase. So all methods of MtgDataBase
+    that return a card instance or a list of card instances, this class should be used to represent
+    a card.
     '''
     def __init__(self, raw_card):
         '''
@@ -75,3 +79,31 @@ class Card:
             else:
                 return color in self.__card.get("colors")
         raise ValueError("%s is not a valid color!" % color)
+    
+    def to_str(self):
+        '''
+        Return a string representation of this card.
+        '''
+        s = ""
+        for key in self.__card.keys():
+            if key != "foreignNames":
+                s += "%s:\t%s\n" % (key, self.__card.get(key))
+            #else:
+                #sys.displayhook(card.get(key))
+        return s
+    
+    def is_legal_in(self, format):
+        '''
+        Return whether this card is legal in given format. Note that if a card is not legal,
+        it can be "Banned" or "Restricted".
+        
+        @format (str): Must be one of Constans.ALL_FORMATS
+        
+        @return (list): list of dict objects, each of which represents a card.
+        '''
+        if format not in Constants.ALL_FORMATS:
+            raise ValueError("Given format '%s' is not valid! It has to be one of following:\n%s" % (format, MtgDataBase.ALL_FORMATS))
+        legalities = self.__card.get("legalities")
+        if type(legalities) is dict and legalities.get(format) == "Legal":
+            return True
+        return False

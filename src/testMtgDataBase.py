@@ -29,7 +29,7 @@ class TestMtgDataBase(unittest.TestCase):
         Verify that MtgDataBase can give us a card by its exact English name.
         '''
         card = self.mtgDb.get_card_by_name("Acidic Slime")
-        self.assertEqual(card.get("cmc"), 5)
+        self.assertEqual(card.cmc(), 5)
     
     def test_get_card_with_similar_name(self):
         '''
@@ -44,7 +44,7 @@ class TestMtgDataBase(unittest.TestCase):
         Verify that MtgDataBase can give us a string representing a given card.
         '''
         card = self.mtgDb.get_card_by_name("Acidic Slime")
-        self.assertGreater(len(self.mtgDb.print_card(card)), 50)
+        self.assertGreater(len(card.to_str()), 50)
     
     def test_get_cards_by_format(self):
         '''

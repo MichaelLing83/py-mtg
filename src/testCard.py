@@ -22,13 +22,13 @@ class TestCard(unittest.TestCase):
         '''
         Verify that Card can be initialized.
         '''
-        card = Card(self.mtgDb.get_card_by_name("Acidic Slime"))
+        card = self.mtgDb.get_card_by_name("Acidic Slime")
     
     def test_name(self):
         '''
         Verify that Card give us the right name.
         '''
-        card = Card(self.mtgDb.get_card_by_name("Acidic Slime"))
+        card = self.mtgDb.get_card_by_name("Acidic Slime")
         self.assertEqual(card.name(), "Acidic Slime")
         self.assertEqual(card.name(language="Chinese Simplified"), "酸液黏菌")
     
@@ -36,7 +36,7 @@ class TestCard(unittest.TestCase):
         '''
         Verify that Card can test its types.
         '''
-        card = Card(self.mtgDb.get_card_by_name("Olivia Voldaren"))
+        card = self.mtgDb.get_card_by_name("Olivia Voldaren")
         self.assertEqual(card.check_type("Vampire"), True)
         self.assertEqual(card.check_type("Legendary"), True)
         self.assertEqual(card.check_type("Zombie"), False)
@@ -48,20 +48,20 @@ class TestCard(unittest.TestCase):
         '''
         Verify that Card can get its CMC.
         '''
-        self.assertEqual(Card(self.mtgDb.get_card_by_name("Olivia Voldaren")).cmc(), 4)
+        self.assertEqual(self.mtgDb.get_card_by_name("Olivia Voldaren").cmc(), 4)
     
     def test_check_color(self):
         '''
         Verify that Card can check if it has a given color.
         '''
-        card = Card(self.mtgDb.get_card_by_name("Olivia Voldaren"))
+        card = self.mtgDb.get_card_by_name("Olivia Voldaren")
         self.assertEqual(card.check_color("Black"), True)
         self.assertEqual(card.check_color("Red"), True)
         self.assertEqual(card.check_color("White"), False)
         self.assertEqual(card.check_color("Blue"), False)
         self.assertEqual(card.check_color("Green"), False)
         self.assertEqual(card.check_color("Colorless"), False)
-        card = Card(self.mtgDb.get_card_by_name("Wooden Stake"))
+        card = self.mtgDb.get_card_by_name("Wooden Stake")
         self.assertEqual(card.check_color("Black"), False)
         self.assertEqual(card.check_color("Red"), False)
         self.assertEqual(card.check_color("White"), False)
