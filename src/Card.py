@@ -3,16 +3,13 @@ class Card:
     '''
     Representing one MTG card.
     '''
-    def __init__(self, mtgDb, name):
+    def __init__(self, raw_card):
         '''
         Initializer.
         
-        @mtgDb (MtgDataBase): the database containing all cards.
-        @name (str): name of the card.
+        @raw_card (dict): A dict object from MtgDataBase representing a card.
         '''
-        self.__name = name
-        self.__mtgDb = mtgDb
-        self.__card = self.__mtgDb.get_card_by_name(self.__name)
+        self.__card = raw_card
     
     def name(self, language="English"):
         '''
