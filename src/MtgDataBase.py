@@ -4,6 +4,9 @@ class MtgDataBase:
     '''
     An database containing all MTG cards.
     '''
+    ALL_FORMATS = ("Classic", "Commander", "Extended", "Freeform", "Block", "Legacy", "Modern",
+                    "Prismatic", "Singleton 100", "Tribal Wars Legacy", "Tribal Wars Standard",
+                    "Vintage", "Standard")
     def __init__(self, json_file_name):
         '''
         '''
@@ -51,3 +54,23 @@ class MtgDataBase:
             #else:
                 #sys.displayhook(card.get(key))
         return s
+    
+    def get_cards_by_format(self, format):
+        '''
+        Return a list of all cards of given format.
+        
+        @format (str): Must be one of following
+            Classic, Commander, Extended, Freeform, Block, Legacy, Modern, Prismatic, Singleton 100,
+            Tribal Wars Legacy, Tribal Wars Standard, Vintage
+        
+        @return (list): list of dict objects, each of which represents a card.
+        '''
+        if format not in MtgDataBase.ALL_FORMATS:
+            raise ValueError("Given format '%s' is not valid! It has to be one of following:\n%s" % (format, MtgDataBase.ALL_FORMATS))
+        cards = list()
+        for name in self.get_all_card_names():
+            card = self.get_card_by_name(name)
+            legalities = card.get("legalities")
+            if type(legalities) is dict and legalities.get(format) == "Legal":
+                cards.append(card)
+        return cards

@@ -46,6 +46,15 @@ class TestMtgDataBase(unittest.TestCase):
         card = self.mtgDb.get_card_by_name("Acidic Slime")
         self.assertGreater(len(self.mtgDb.print_card(card)), 50)
     
+    def test_get_cards_by_format(self):
+        '''
+        Verify that MtgDataBase can give us a list of cards based on given format.
+        '''
+        cards = self.mtgDb.get_cards_by_format("Standard")
+        self.assertGreater(len(cards), 100)
+        self.assertIn(self.mtgDb.get_card_by_name("Swamp"), cards)
+        self.assertIn(self.mtgDb.get_card_by_name("Doom Blade"), cards)
+    
     
 
 if __name__ == '__main__':
