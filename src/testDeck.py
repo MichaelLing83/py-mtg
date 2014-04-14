@@ -12,15 +12,6 @@ class TestDeck(unittest.TestCase):
         print("\nFinish testing %s" % __name__)
     
     def setUp(self):
-        pass
-    
-    def tearDown(self):
-        pass
-    
-    def test_init(self):
-        '''
-        Initialize a deck from a deck list string.
-        '''
         bw_token_modern_deck_list = '''4 Arid Mesa
 4 Doom Blade
 2 Engineered Explosives
@@ -47,8 +38,27 @@ Sideboard
 3 Rest in Peace
 3 Stony Silence
 1 Tectonic Edge'''
-        deck = Deck(bw_token_modern_deck_list)
-        self.assertNotEqual(deck, None)
+        self.deck = Deck(bw_token_modern_deck_list)
+    
+    def tearDown(self):
+        pass
+    
+    def test_init(self):
+        '''
+        Initialize a deck from a deck list string.
+        '''
+        self.assertNotEqual(self.deck, None)
+    
+    def test_count(self):
+        '''
+        Verify that Deck can count cards by type correctly.
+        '''
+        self.assertEqual(self.deck.count(type="Land"), 25)
+        self.assertEqual(self.deck.count(type="Creature"), 4)
+        self.assertEqual(self.deck.count(type="Instant"), 8)
+        self.assertEqual(self.deck.count(type="Enchantment"), 4)
+        self.assertEqual(self.deck.count(type="Artifact"), 5)
+        self.assertEqual(self.deck.count(type="Sorcery"), 14)
 
 if __name__ == '__main__':
     unittest.main()

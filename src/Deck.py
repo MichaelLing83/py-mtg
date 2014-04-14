@@ -1,4 +1,5 @@
-﻿from MtgDataBase import MtgDataBase
+﻿import Constants
+from MtgDataBase import MtgDataBase
 
 class Deck:
     '''
@@ -65,3 +66,27 @@ class Deck:
                     # add to side board
                     assert name_of_card not in self.__side_board_dict.keys(), "Card '%s' is defined multiple times for side board!" % name_of_card
                     self.__side_board_dict[name_of_card] = num_of_card
+        # check the deck meets basic requirements
+        c = 0
+        for card_number in self.__main_deck_dict.values():
+            c += card_number
+        assert c >= Constants.MAIN_DECK_MIN_SIZE, "Main deck needs at least %d cards, but it has only %d." % (Constants.MAIN_DECK_MIN_SIZE, c)
+        c = 0
+        for card_number in self.__side_board_dict.values():
+            c += card_number
+        assert c <= Constants.SIDE_BOARD_MAX_SIZE, "Side board can have at most %d cards, but it has %d." % (Constants.SIDE_BOARD_MAX_SIZE, c)
+    
+    def count(self, type):
+        '''
+        Count how many cards in main deck has given type. Type can be:
+            Land, Creature, Enchantment, etc.
+        
+        @type (str): type of cards
+        
+        @return (int): number of cards in main deck that has given type
+        '''
+        c = 0
+        for card_name in self.__main_deck_dict.keys():
+            if MtgDataBase.get_card_by_name(card_name).check_type(type):
+                c += self.__main_deck_dict[card_name]
+        return c
