@@ -4,53 +4,56 @@ from Card import Card
 
 class MtgDataBase:
     '''
-    An database containing all MTG cards.
-    '''
-    def __init__(self, json_file_name):
-        '''
-        Initialize a MTG card database from one json file from http://mtgjson.com/
-        Thanks so much to Robert (robert@cosmicrealms.com).
-        
-        @json_file_name (str): path to the json file.
-        
-        @return (MtgDataBase): an MtgDataBase instance, which contains a internal dict of
-                                card_name (str) -> Card instance
-                               pairs.
-        '''
-        dbFile = open(json_file_name, 'r', encoding="utf-8")
-        self.__rawMtgDb = json.load(dbFile)
-        dbFile.close()
-        self.__mtgDb = dict()
-        for set_name in self.__rawMtgDb.keys():
-            for card in self.__rawMtgDb.get(set_name).get("cards"):
-                if card.get("name") not in self.__mtgDb.keys():
-                    self.__mtgDb[card.get("name")] = Card(card)
-        self.__all_card_names = list(self.__mtgDb.keys())
-        self.__all_card_names.sort()
+    An database containing all MTG cards. And this class should never be instantiated.
     
-    def get_all_card_names(self):
+    This MTG card database is initialized from one json file from http://mtgjson.com/
+    Thanks so much to Robert (robert@cosmicrealms.com).
+    '''
+    
+    dbFile = open(Constants.MTG_JSON_FILE_PATH, 'r', encoding="utf-8")
+    __rawMtgDb = json.load(dbFile)
+    dbFile.close()
+    __mtgDb = dict()
+    for set_name in __rawMtgDb.keys():
+        for card in __rawMtgDb.get(set_name).get("cards"):
+            if card.get("name") not in __mtgDb.keys():
+                __mtgDb[card.get("name")] = Card(card)
+    __all_card_names = list(__mtgDb.keys())
+    __all_card_names.sort()
+    
+    def __init__(self):
+        '''
+        This class should never be instantiated.
+        '''
+        raise ValueError("MtgDataBase class should never be initialized!")
+    
+    @classmethod
+    def get_all_card_names(cls):
         '''
         Return a list of all card names.
         '''
-        return self.__all_card_names
+        return MtgDataBase.__all_card_names
     
-    def get_card_by_name(self, name):
+    @classmethod
+    def get_card_by_name(cls, name):
         '''
         Get an card by it's precise name.
         '''
-        return self.__mtgDb[name]
+        return MtgDataBase.__mtgDb[name]
     
-    def get_card_by_similar_name(self, partial_name):
+    @classmethod
+    def get_card_by_similar_name(cls, partial_name):
         '''
         Get a list of cards with similar names.
         '''
         cards = list()
-        for name in self.get_all_card_names():
+        for name in MtgDataBase.get_all_card_names():
             if partial_name.upper() in name.upper():
-                cards.append(self.get_card_by_name(name))
+                cards.append(MtgDataBase.get_card_by_name(name))
         return cards
     
-    def get_cards_by_format(self, format):
+    @classmethod
+    def get_cards_by_format(cls, format):
         '''
         Return a list of all cards of given format.
         
@@ -61,8 +64,8 @@ class MtgDataBase:
         if format not in Constants.ALL_FORMATS:
             raise ValueError("Given format '%s' is not valid! It has to be one of following:\n%s" % (format, MtgDataBase.ALL_FORMATS))
         cards = list()
-        for name in self.get_all_card_names():
-            card = self.get_card_by_name(name)
+        for name in MtgDataBase.get_all_card_names():
+            card = MtgDataBase.get_card_by_name(name)
             if card.is_legal_in(format):
                 cards.append(card)
         return cards
