@@ -107,3 +107,17 @@ class Card:
         if type(legalities) is dict and legalities.get(format) == "Legal":
             return True
         return False
+    
+    def check_condition(self, card_condition):
+        '''
+        Check this card against given condition.
+        
+        @card_condition (CardCondition): a condition to check against.
+        
+        @return (bool): True or False
+        '''
+        for value_type, op, value_list in card_condition.get_conditions():
+            if op == "in":
+                if not self.__card.get(value_type) in value_list:
+                    return False
+        return True
