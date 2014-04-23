@@ -3,6 +3,9 @@
 ALL_FORMATS = ("Classic", "Commander", "Extended", "Freeform", "Block", "Legacy", "Modern",
                 "Prismatic", "Singleton 100", "Tribal Wars Legacy", "Tribal Wars Standard",
                 "Vintage", "Standard")
+ALL_CARD_TYPES = ("Creature", "Artifact", "Enchantment", "Sorcery", "Instant", "Legendary",
+                    "Zombie", "Vampire", "Human", "Ooze", "Land")
+ALL_COLORS = ("Black", "White", "Red", "Green", "Blue", "Colorless")
 MAIN_DECK_MIN_SIZE = 60
 SIDE_BOARD_MAX_SIZE = 15
 MTG_JSON_FILE_PATH = "./data/AllSets-x.json"

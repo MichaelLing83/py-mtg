@@ -1,4 +1,5 @@
 ﻿import Constants
+from typecheck import *
 from MtgDataBase import MtgDataBase
 
 class Deck:
@@ -6,7 +7,8 @@ class Deck:
     Representing a MTG deck, with facilitating methods.
     '''
     
-    def __init__(self, deck_list_txt):
+    @typecheck
+    def __init__(self, deck_list_txt: str) -> nothing:
         '''
         Initialize a Deck instance from given deck list text.
         
@@ -76,7 +78,8 @@ class Deck:
             c += card_number
         assert c <= Constants.SIDE_BOARD_MAX_SIZE, "Side board can have at most %d cards, but it has %d." % (Constants.SIDE_BOARD_MAX_SIZE, c)
     
-    def count(self, type):
+    @typecheck
+    def count(self, type: one_of(Constants.ALL_CARD_TYPES)) -> int:
         '''
         Count how many cards in main deck has given type. Type can be:
             Land, Creature, Enchantment, etc.

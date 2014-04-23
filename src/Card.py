@@ -1,4 +1,6 @@
 ﻿import Constants
+from CardCondition import CardCondition
+from typecheck import *
 
 class Card:
     '''
@@ -7,7 +9,9 @@ class Card:
     that return a card instance or a list of card instances, this class should be used to represent
     a card.
     '''
-    def __init__(self, raw_card):
+    
+    @typecheck
+    def __init__(self, raw_card: dict) -> nothing:
         '''
         Initializer.
         
@@ -15,7 +19,8 @@ class Card:
         '''
         self.__card = raw_card
     
-    def name(self, language="English"):
+    @typecheck
+    def name(self, language: str ="English") -> str:
         '''
         Get name of this card.
         
@@ -41,7 +46,8 @@ class Card:
                     return language_name.get("name")
         raise ValueError("%s name is not found for card %s" % (language, self.__card.get("name")))
     
-    def check_type(self, target_type):
+    @typecheck
+    def check_type(self, target_type: one_of(Constants.ALL_CARD_TYPES)) -> bool:
         '''
         Check if this card has given target_type.
         
@@ -54,7 +60,8 @@ class Card:
         '''
         return target_type in self.__card.get("type")
     
-    def cmc(self):
+    @typecheck
+    def cmc(self) -> int:
         '''
         Get Converted Mana Cost for this card.
         
@@ -62,7 +69,8 @@ class Card:
         '''
         return self.__card.get("cmc")
     
-    def check_color(self, color):
+    @typecheck
+    def check_color(self, color: one_of(Constants.ALL_COLORS)) -> bool:
         '''
         Check if this card has given color.
         
@@ -80,7 +88,8 @@ class Card:
                 return color in self.__card.get("colors")
         raise ValueError("%s is not a valid color!" % color)
     
-    def to_str(self):
+    @typecheck
+    def to_str(self) -> str:
         '''
         Return a string representation of this card.
         '''
@@ -92,12 +101,13 @@ class Card:
                 #sys.displayhook(card.get(key))
         return s
     
-    def is_legal_in(self, format):
+    @typecheck
+    def is_legal_in(self, format: one_of(Constants.ALL_FORMATS)) -> bool:
         '''
         Return whether this card is legal in given format. Note that if a card is not legal,
         it can be "Banned" or "Restricted".
         
-        @format (str): Must be one of Constans.ALL_FORMATS
+        @format (str): Must be one of Constants.ALL_FORMATS
         
         @return (list): list of dict objects, each of which represents a card.
         '''
@@ -108,7 +118,8 @@ class Card:
             return True
         return False
     
-    def check_condition(self, card_condition):
+    @typecheck
+    def check_condition(self, card_condition: CardCondition) -> bool:
         '''
         Check this card against given condition.
         

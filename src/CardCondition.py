@@ -1,13 +1,18 @@
-﻿
+﻿from typecheck import *
+
 class CardCondition:
     '''
     A condition class, whose instance can be used to check against a card.
     '''
     
-    def __init__(self):
+    @typecheck
+    def __init__(self) -> nothing:
         self.__condition_list = list()
     
-    def add(self, value_type, op, value_list):
+    @typecheck
+    def add(self, value_type: one_of("cmc", "type", "color"),
+            op: one_of("in"),
+            value_list: tuple) -> nothing:
         '''
         Add a condition, e.g.:
             "cmc", "in", (4, 5)
@@ -22,5 +27,6 @@ class CardCondition:
         '''
         self.__condition_list.append( (value_type, op, value_list) )
     
-    def get_conditions(self):
+    @typecheck
+    def get_conditions(self) -> list:
         return self.__condition_list

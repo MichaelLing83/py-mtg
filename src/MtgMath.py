@@ -1,4 +1,5 @@
-﻿
+﻿from typecheck import *
+
 class MtgMath:
     '''
     Mathematics methods. 
@@ -8,11 +9,14 @@ class MtgMath:
     __n_factorial_max_key__ = 0
     __n_factorial__[__n_factorial_max_key__] = 1
     
-    def __init__(self):
+    @typecheck
+    def __init__(self) -> nothing:
         pass
     
+    non_negative_int= lambda x: x >= 0
     @classmethod
-    def C(cls, n, r):
+    @typecheck
+    def C(cls, n: non_negative_int, r: non_negative_int) -> non_negative_int:
         '''
         Number of possible solutions of "n choose r", i.e. Choose r items from total n items.
         '''
@@ -21,7 +25,8 @@ class MtgMath:
         return MtgMath.n_factorial(n) / ( MtgMath.n_factorial(r) * MtgMath.n_factorial(n-r) )
     
     @classmethod
-    def n_factorial(cls, n):
+    @typecheck
+    def n_factorial(cls, n: non_negative_int) -> non_negative_int:
         '''
         Return "n factorial".
         

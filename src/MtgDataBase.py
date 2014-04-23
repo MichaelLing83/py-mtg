@@ -1,5 +1,6 @@
 ﻿import json
 import Constants
+from typecheck import *
 from Card import Card
 
 class MtgDataBase:
@@ -21,28 +22,32 @@ class MtgDataBase:
     __all_card_names = list(__mtgDb.keys())
     __all_card_names.sort()
     
-    def __init__(self):
+    @typecheck
+    def __init__(self) -> nothing:
         '''
         This class should never be instantiated.
         '''
         raise ValueError("MtgDataBase class should never be initialized!")
     
     @classmethod
-    def get_all_card_names(cls):
+    @typecheck
+    def get_all_card_names(cls) -> list:
         '''
         Return a list of all card names.
         '''
         return MtgDataBase.__all_card_names
     
     @classmethod
-    def get_card_by_name(cls, name):
+    @typecheck
+    def get_card_by_name(cls, name: str) -> Card:
         '''
         Get an card by it's precise name.
         '''
         return MtgDataBase.__mtgDb[name]
     
     @classmethod
-    def get_card_by_similar_name(cls, partial_name):
+    @typecheck
+    def get_card_by_similar_name(cls, partial_name: str) -> list:
         '''
         Get a list of cards with similar names.
         '''
@@ -53,7 +58,8 @@ class MtgDataBase:
         return cards
     
     @classmethod
-    def get_cards_by_format(cls, format):
+    @typecheck
+    def get_cards_by_format(cls, format: one_of(Constants.ALL_FORMATS)) -> list:
         '''
         Return a list of all cards of given format.
         
