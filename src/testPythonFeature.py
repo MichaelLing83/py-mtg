@@ -34,6 +34,29 @@ class TestPythonFeature(unittest.TestCase):
             return "hej"
         a.__setattr__(say_hi.__name__, types.MethodType(say_hi, a))
         self.assertEqual(a.say_hi(), "hej")
+    
+    def test_singleton(self):
+        '''
+        Verify that singleton pattern can be implemented.
+        '''
+        class Singleton(object):
+            def __init__(self, klass):
+                self.klass = klass   # class which is being decorated
+                self.instance = None  # instance of that class
+
+            def __call__(self, *args, **kwargs):
+                if self.instance is None:
+                    # new instance is created and stored for future use
+                    self.instance = self.klass(*args, **kwargs)
+                return self.instance
+        @Singleton
+        class Resource(object):
+            def __init__(self):
+              self.name = None
+
+        a = Resource()
+        b = Resource()
+        self.assertIs(a, b)
 
 if __name__ == '__main__':
     unittest.main()
