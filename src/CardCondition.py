@@ -14,13 +14,21 @@ class CardCondition:
             )
     
     @typecheck
-    def __init__(self) -> nothing:
+    def __init__(self,
+                value_type: one_of(Constants.ALL_KEYS)="cmc",
+                op: one_of(OPS)=">",
+                value_list: either(tuple, int, str)=-1
+                ) -> nothing:
+        '''
+        By default, it is an all-matching condition.
+        '''
         self.__condition_list = list()
+        self.add(value_type, op, value_list)
     
     @typecheck
     def add(self, value_type: one_of(Constants.ALL_KEYS),
             op: one_of(OPS),
-            value_list: either(tuple, int, str)) -> nothing:
+            value: either(tuple, int, str)) -> nothing:
         '''
         Add a condition, e.g.:
             "cmc", "in", (4, 5)
@@ -29,11 +37,11 @@ class CardCondition:
         @value_type (str): type of value to check against, e.g.:
             cmc, type, color
         @op (str): condition operator, e.g.: in, not in
-        @value_list (tuple): tuple of values.
+        @value (tuple): tuple of values.
         
         @return (bool): True or False
         '''
-        self.__condition_list.append( (value_type, op, value_list) )
+        self.__condition_list.append( (value_type, op, value) )
     
     @typecheck
     def check_card(self, card: Card) -> bool:

@@ -1,5 +1,6 @@
 ﻿import unittest
 from Deck import Deck
+from CardCondition import CardCondition
 
 class TestDeck(unittest.TestCase):
 
@@ -59,12 +60,12 @@ Sideboard
         '''
         Verify that Deck can count cards by type correctly.
         '''
-        self.assertEqual(self.deck.count(type="Land"), 25)
-        self.assertEqual(self.deck.count(type="Creature"), 4)
-        self.assertEqual(self.deck.count(type="Instant"), 8)
-        self.assertEqual(self.deck.count(type="Enchantment"), 4)
-        self.assertEqual(self.deck.count(type="Artifact"), 5)
-        self.assertEqual(self.deck.count(type="Sorcery"), 14)
+        self.assertEqual(self.deck.count(CardCondition("type", "have", "Land")), 25)
+        self.assertEqual(self.deck.count(CardCondition("type", "have", "Creature")), 4)
+        self.assertEqual(self.deck.count(CardCondition("type", "have", "Instant")), 8)
+        self.assertEqual(self.deck.count(CardCondition("type", "have", "Enchantment")), 4)
+        self.assertEqual(self.deck.count(CardCondition("type", "have", "Artifact")), 5)
+        self.assertEqual(self.deck.count(CardCondition("type", "have", "Sorcery")), 14)
 
 if __name__ == '__main__':
     unittest.main()

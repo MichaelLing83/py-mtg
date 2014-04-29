@@ -2,6 +2,7 @@
 from typecheck import *
 from MtgDataBase import MtgDataBase
 from Utilities import MtgException
+from CardCondition import CardCondition
 
 class Deck:
     '''
@@ -93,17 +94,16 @@ class Deck:
         assert c <= Constants.SIDE_BOARD_MAX_SIZE, "Side board can have at most %d cards, but it has %d." % (Constants.SIDE_BOARD_MAX_SIZE, c)
     
     @typecheck
-    def count(self, type: one_of(Constants.ALL_CARD_TYPES)) -> int:
+    def count(self, condition: CardCondition) -> int:
         '''
-        Count how many cards in main deck has given type. Type can be:
-            Land, Creature, Enchantment, etc.
+        Count how many cards in main deck meet given condition.
         
-        @type (str): type of cards
+        @condition (CardCondition): a condition object to use for matching
         
-        @return (int): number of cards in main deck that has given type
+        @return (int): number of cards in main deck that meet given condition.
         '''
         c = 0
         for card_name in self.__main_deck_dict.keys():
-            if MtgDataBase.get_card_by_name(card_name).check_type(type):
+            if condition.check_card(MtgDataBase.get_card_by_name(card_name)):
                 c += self.__main_deck_dict[card_name]
         return c
