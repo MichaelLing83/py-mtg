@@ -22,7 +22,7 @@ class TestMtgDataBase(unittest.TestCase):
         Verify that MtgDataBase can give a list of all card names.
         '''
         self.assertEqual(type(MtgDataBase.get_all_card_names()), list)
-        self.assertEqual(len(MtgDataBase.get_all_card_names()), 14096)
+        self.assertGreaterEqual(len(MtgDataBase.get_all_card_names()), 14096)
     
     def test_get_card_by_name(self):
         '''
