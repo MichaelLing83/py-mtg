@@ -5,18 +5,20 @@ ALL_FORMATS = ("Classic", "Commander", "Extended", "Freeform", "Block", "Legacy"
                 "Vintage", "Standard")
 ALL_CARD_TYPES = ("Creature", "Artifact", "Enchantment", "Sorcery", "Instant", "Legendary",
                     "Zombie", "Vampire", "Human", "Ooze", "Land")
+ALL_KEYS = ("mana_cost",    # e.g. {2}{B}{R}, use this to match specific mana cost
+            "cmc",  # converted mana cost
+            "type", # e.g. Legendary Creature — Vampire
+            "rulings",  # use this to match any rule on a card
+            "colors",   # e.g. ['Black', 'Red']
+            "name", # e.g. Olivia Voldaren
+            "rarity",   # e.g. Mythic Rare
+            "power",    # a number
+            "toughness",    # a number
+            "legalities",   # forms that this card is legal or illegal in
+            "text", # printed text on this card
+            )
 ALL_COLORS = ("Black", "White", "Red", "Green", "Blue", "Colorless")
 MAIN_DECK_MIN_SIZE = 60
 SIDE_BOARD_MAX_SIZE = 15
 MTG_JSON_FILE_PATH = "./data/AllSets-x.json"
 PROJECT_ROOT = "py-mtg"
-
-cwd = os.getcwd()
-if PROJECT_ROOT in cwd:
-    # we're somewhere under our code structure, presumably
-    while not cwd.endswith(PROJECT_ROOT):
-        os.chdir("..")  # go to parent directory
-        cwd = os.getcwd()
-else:
-    #TODO: cope with situations that program is started from outside of this project's directory
-    raise ValueError("Must be started from py-mtg directory! It's started from: %s" % cwd)

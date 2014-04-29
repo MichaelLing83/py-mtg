@@ -1,5 +1,4 @@
 ﻿import Constants
-from CardCondition import CardCondition
 from typecheck import *
 
 class Card:
@@ -119,16 +118,60 @@ class Card:
         return False
     
     @typecheck
-    def check_condition(self, card_condition: CardCondition) -> bool:
-        '''
-        Check this card against given condition.
-        
-        @card_condition (CardCondition): a condition to check against.
-        
-        @return (bool): True or False
-        '''
-        for value_type, op, value_list in card_condition.get_conditions():
-            if op == "in":
-                if not self.__card.get(value_type) in value_list:
-                    return False
-        return True
+    def mana_cost(self) -> str:
+        return self.__card.get("manaCost")
+    
+    @typecheck
+    def type(self) -> str:
+        return self.__card.get("type")
+    
+    @typecheck
+    def rulings(self) -> str:
+        result = list()
+        for one_rule in self.__card.get("rulings"):
+            result.append(one_rule['date'] + "\t" + one_rule['text'])
+        return "\n".join(result)
+    
+    @typecheck
+    def colors(self) -> str:
+        return " ".join( self.__card.get("colors") )
+    
+    @typecheck
+    def rarity(self) -> str:
+        return self.__card.get("rarity")
+    
+    @typecheck
+    def power(self) -> int:
+        return int(self.__card.get("power"))
+    
+    @typecheck
+    def toughness(self) -> int:
+        return int(self.__card.get("toughness"))
+    
+    @typecheck
+    def legalities(self) -> str:
+        result = list()
+        for form in self.__card.get("legalities").keys():
+            if self.__card.get("legalities")[form] == "Legal":
+                result.append(form)
+        return " ".join(result)
+    
+    @typecheck
+    def text(self) -> str:
+        return self.__card.get("text")
+    
+    @typecheck
+    def get(self, key: one_of(Constants.ALL_KEYS)) -> either(int, str):
+        return {
+            "mana_cost": lambda: self.mana_cost(),    # e.g. {2}{B}{R}, use this to match specific mana cost
+            "cmc": lambda: self.cmc(),  # converted mana cost
+            "type": lambda: self.type(), # e.g. Legendary Creature — Vampire
+            "rulings": lambda: self.rulings(),  # use this to match any rule on a card
+            "colors": lambda: self.colors(),   # e.g. ['Black', 'Red']
+            "name": lambda: self.name(), # e.g. Olivia Voldaren
+            "rarity": lambda: self.rarity(),   # e.g. Mythic Rare
+            "power": lambda: self.power(),    # a number
+            "toughness": lambda: self.toughness(),    # a number
+            "legalities": lambda: self.legalities(),   # forms that this card is legal or illegal in
+            "text": lambda: self.text(), # printed text on this card
+            }[key]()

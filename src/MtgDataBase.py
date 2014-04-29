@@ -2,6 +2,10 @@
 import Constants
 from typecheck import *
 from Card import Card
+from Utilities import go_to_proj_root
+
+# so we work from the right dir
+go_to_proj_root()
 
 class MtgDataBase:
     '''

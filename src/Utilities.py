@@ -1,4 +1,17 @@
 ﻿from typecheck import *
+import os
+import Constants
+
+def go_to_proj_root():
+    cwd = os.getcwd()
+    if Constants.PROJECT_ROOT in cwd:
+        # we're somewhere under our code structure, presumably
+        while not cwd.endswith(Constants.PROJECT_ROOT):
+            os.chdir("..")  # go to parent directory
+            cwd = os.getcwd()
+    else:
+        #TODO: cope with situations that program is started from outside of this project's directory
+        raise ValueError("Must be started from py-mtg directory! It's started from: %s" % cwd)
 
 class MtgException(Exception):
     '''
