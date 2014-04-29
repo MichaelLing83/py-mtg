@@ -2,6 +2,7 @@
 from typecheck import *
 from Utilities import MtgException
 from MtgGame import Battlefield
+from MtgGame import SpellAndAbilityStack
 
 class TestMtgGame(unittest.TestCase):
 
@@ -25,6 +26,12 @@ class TestMtgGame(unittest.TestCase):
         '''
         self.assertRaises(MtgException, Battlefield)
         self.assertRaises(MtgException, Battlefield, (1,2,3))
+    
+    def test_do_not_instantiate(self):
+        '''
+        Verify that some classes should never be instantiated.
+        '''
+        self.assertRaisesRegex(MtgException, "SpellAndAbilityStack", SpellAndAbilityStack)
 
 if __name__ == '__main__':
     unittest.main()
