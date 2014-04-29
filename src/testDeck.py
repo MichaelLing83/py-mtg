@@ -38,16 +38,22 @@ Sideboard
 3 Rest in Peace
 3 Stony Silence
 1 Tectonic Edge'''
-        self.deck = Deck(bw_token_modern_deck_list)
+        self.deck = Deck(deck_list_str=bw_token_modern_deck_list)
     
     def tearDown(self):
         pass
     
-    def test_init(self):
+    def test_init_from_str(self):
         '''
         Initialize a deck from a deck list string.
         '''
         self.assertNotEqual(self.deck, None)
+    
+    def test_init_from_file(self):
+        '''
+        Initialize a deck from a deck list file.
+        '''
+        self.assertNotEqual(Deck(file_name="data/BW_Token_Modem.deck"), None)
     
     def test_count(self):
         '''

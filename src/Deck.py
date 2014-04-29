@@ -1,6 +1,7 @@
 ﻿import Constants
 from typecheck import *
 from MtgDataBase import MtgDataBase
+from Utilities import MtgException
 
 class Deck:
     '''
@@ -8,11 +9,11 @@ class Deck:
     '''
     
     @typecheck
-    def __init__(self, deck_list_txt: str) -> nothing:
+    def __init__(self, deck_list_str: str="", file_name: str="") -> nothing:
         '''
         Initialize a Deck instance from given deck list text.
         
-        @deck_list_txt (str): in format of "MTGO/Apprentice" from TCGPlayer site, e.g.
+        @deck_list_str (str): in format of "MTGO/Apprentice" from TCGPlayer site, e.g.
             4 Arid Mesa
             4 Doom Blade
             2 Engineered Explosives
@@ -42,16 +43,29 @@ class Deck:
         
         @return (Deck): a Deck instance
         '''
-        self.__deck_list_text = deck_list_txt
+        # check input is valid
+        if deck_list_str and file_name:
+            raise MtgException("Deck cannot be initialized from a deck_list_str and a file_name!")
+        elif not (deck_list_str or file_name):
+            raise MtgException("Deck cannot be initialized! A deck_list_str or a file_name must be given!")
+        
+        if deck_list_str:
+            self.__deck_list_text = deck_list_str.splitlines()
+        if file_name:
+            deck_file = open(file_name, "r", encoding="utf8")
+            self.__deck_list_text = list()
+            for l in deck_file.readlines():
+                if len(l) >0:
+                    self.__deck_list_text.append(l)
         self.__main_deck_dict = dict()
         self.__side_board_dict = dict()
         
         # parse and initialize all cards in the deck
         is_main_deck = True
-        for line in self.__deck_list_text.splitlines():
+        for line in self.__deck_list_text:
             #print("line = %s" % line)
             line = line.strip()
-            if line.upper() == "SIDEBOARD":
+            if line.upper() == u"SIDEBOARD":
                 is_main_deck = False
             else:
                 num_of_card = int(line[0])
