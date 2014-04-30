@@ -96,13 +96,24 @@ class Card:
         '''
         Return a string representation of this card.
         '''
-        s = ""
-        for key in self.__card.keys():
-            if key != "foreignNames":
-                s += "%s:\t%s\n" % (key, self.__card.get(key))
+        result = list()
+        keys = set(Constants.ALL_KEYS)
+        keys.discard("legalities")
+        keys.discard("flavor")
+        keys.discard("rulings")
+        keys = list(keys)
+        keys.sort()
+        for key in ('name', 'type', 'mana_cost', 'cmc', 'rarity'):
+            result.append(key + ":\t" + str(self.get(key)))
+        result.append("power/toughness:\t%d/%d" % (self.get("power"), self.get("toughness")))
+        result.append("text:\t%s" % self.get("text"))
+        return "\n".join(result)
+        #for key in self.__card.keys():
+            #if key != "foreignNames":
+                #s += "%s:\t%s\n" % (key, self.__card.get(key))
             #else:
                 #sys.displayhook(card.get(key))
-        return s
+        #return s
     
     @typecheck
     def is_legal_in(self, format: one_of(Constants.ALL_FORMATS)) -> bool:

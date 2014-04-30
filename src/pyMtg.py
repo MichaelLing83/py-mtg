@@ -29,6 +29,31 @@ class pyMtg(cmd.Cmd):
         self.last_search_result = None
         self.last_search_result_index = 0
     
+    def do_pcard(self, line):
+        '''
+        Print a Card from search result. Note that you need to do a search first,
+        otherwise nothing will be printed.
+        
+        Usage:
+            pcard [option]
+            
+            if no option is given, then current card is printed;
+            if "n" is given, then move to next card and print it;
+            if "p" is given, then move to previous card and print it;
+        '''
+        line = line.strip()
+        if line and (line not in ('n', 'p')):
+            self.onecmd("help pcard")
+            return
+        if self.last_search_result:
+            self.last_search_result_index = {
+                '': lambda: self.last_search_result_index,
+                'n': lambda: (self.last_search_result_index+1)%len(self.last_search_result),
+                'p': lambda: (self.last_search_result_index-1)%len(self.last_search_result),
+            }[line]()
+            print(self.last_search_result[self.last_search_result_index].to_str())
+        
+    
     def do_search(self, line):
         '''
         Search cards from MTG data base by given condition.
