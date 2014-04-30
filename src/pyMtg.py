@@ -10,6 +10,7 @@ import os
 import Constants
 from CardCondition import CardCondition
 from MtgDataBase import MtgDataBase
+from Utilities import MtgException
 
 class pyMtg(cmd.Cmd):
     '''
@@ -39,6 +40,11 @@ class pyMtg(cmd.Cmd):
         try:
             card_condition = CardCondition()
             for one_condition in line.split(';'):
+                one_condition = one_condition.split()
+                if len(one_condition) == 0:
+                    continue
+                if len(one_condition) < 3:
+                    raise MtgException("Illegal condition: %s" % ' '.join(one_condition))
                 key = one_condition[0]
                 if one_condition[1] == 'not':
                     op = ' '.join(one_condition[1:3])

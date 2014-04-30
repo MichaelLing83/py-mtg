@@ -123,7 +123,11 @@ class Card:
     
     @typecheck
     def mana_cost(self) -> str:
-        return self.__card.get("manaCost")
+        __mana_cost = self.__card.get("manaCost")
+        if __mana_cost:
+            return __mana_cost
+        else:
+            return ""
     
     @typecheck
     def type(self) -> str:
@@ -132,7 +136,10 @@ class Card:
     @typecheck
     def rulings(self) -> str:
         result = list()
-        for one_rule in self.__card.get("rulings"):
+        rulings = self.__card.get("rulings")
+        if not rulings:
+            return ""
+        for one_rule in rulings:
             result.append(one_rule['date'] + "\t" + one_rule['text'])
         return "\n".join(result)
     
@@ -155,7 +162,11 @@ class Card:
     @typecheck
     def legalities(self) -> str:
         result = list()
-        for form in self.__card.get("legalities").keys():
+        legalities = self.__card.get("legalities")
+        # if there is no legalities information, just return an empty string
+        if not legalities:
+            return ""
+        for form in legalities.keys():
             if self.__card.get("legalities")[form] == "Legal":
                 result.append(form)
         return " ".join(result)
