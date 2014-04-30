@@ -66,7 +66,11 @@ class Card:
         
         @return (int): CMC of the card.
         '''
-        return self.__card.get("cmc")
+        __cmc = self.__card.get("cmc")
+        if __cmc:
+            return int(self.__card.get("cmc"))
+        else:
+            return 0
     
     @typecheck
     def check_color(self, color: one_of(Constants.ALL_COLORS)) -> bool:

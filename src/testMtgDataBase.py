@@ -1,5 +1,6 @@
 ﻿import unittest
 from MtgDataBase import MtgDataBase
+from CardCondition import CardCondition
 
 class TestMtgDataBase(unittest.TestCase):
 
@@ -54,6 +55,15 @@ class TestMtgDataBase(unittest.TestCase):
         self.assertGreater(len(cards), 100)
         self.assertIn(MtgDataBase.get_card_by_name("Swamp"), cards)
         self.assertIn(MtgDataBase.get_card_by_name("Doom Blade"), cards)
+    
+    def test_get_cards(self):
+        '''
+        Verify that MtgDataBase can give us a list of cards based on given condition.
+        '''
+        condition = CardCondition()
+        condition.add("cmc", "==", 10)
+        cards = MtgDataBase.get_cards(condition)
+        self.assertGreater(len(cards), 0)
     
     
 

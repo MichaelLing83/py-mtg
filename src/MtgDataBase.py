@@ -3,6 +3,7 @@ import Constants
 from typecheck import *
 from Card import Card
 from Utilities import go_to_proj_root
+from CardCondition import CardCondition
 
 # so we work from the right dir
 go_to_proj_root()
@@ -71,11 +72,26 @@ class MtgDataBase:
         
         @return (list): list of dict objects, each of which represents a card.
         '''
-        if format not in Constants.ALL_FORMATS:
-            raise ValueError("Given format '%s' is not valid! It has to be one of following:\n%s" % (format, MtgDataBase.ALL_FORMATS))
         cards = list()
         for name in MtgDataBase.get_all_card_names():
             card = MtgDataBase.get_card_by_name(name)
             if card.is_legal_in(format):
+                cards.append(card)
+        return cards
+    
+    @classmethod
+    @typecheck
+    def get_cards(cls, condition: CardCondition) -> list:
+        '''
+        Return a list of cards meeting the given condition.
+        
+        @condition (CardCondition): condition used to match
+        
+        @return (list): list of Card objects.
+        '''
+        cards = list()
+        for name in MtgDataBase.get_all_card_names():
+            card = MtgDataBase.get_card_by_name(name)
+            if condition.check_card(card):
                 cards.append(card)
         return cards
