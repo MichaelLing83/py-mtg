@@ -16,6 +16,7 @@ ALL_KEYS = ("mana_cost",    # e.g. {2}{B}{R}, use this to match specific mana co
             "toughness",    # a number
             "legalities",   # forms that this card is legal or illegal in
             "text", # printed text on this card
+            "flavor",   # flavor text of the card
             )
 ALL_COLORS = ("Black", "White", "Red", "Green", "Blue", "Colorless")
 MAIN_DECK_MIN_SIZE = 60

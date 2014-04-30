@@ -161,6 +161,10 @@ class Card:
         return self.__card.get("text")
     
     @typecheck
+    def flavor(self) -> str:
+        return self.__card.get("flavor")
+    
+    @typecheck
     def get(self, key: one_of(Constants.ALL_KEYS)) -> either(int, str):
         return {
             "mana_cost": lambda: self.mana_cost(),    # e.g. {2}{B}{R}, use this to match specific mana cost
@@ -174,4 +178,5 @@ class Card:
             "toughness": lambda: self.toughness(),    # a number
             "legalities": lambda: self.legalities(),   # forms that this card is legal or illegal in
             "text": lambda: self.text(), # printed text on this card
+            "flavor": lambda: self.flavor(),    # flavor text
             }[key]()
