@@ -64,6 +64,10 @@ class TestMtgDataBase(unittest.TestCase):
         condition.add("cmc", "==", 10)
         cards = MtgDataBase.get_cards(condition)
         self.assertGreater(len(cards), 0)
+        condition = CardCondition()
+        condition.add("colors", "have", "Red")
+        cards = MtgDataBase.get_cards(condition)
+        self.assertGreater(len(cards), 0)
     
     
 

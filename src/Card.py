@@ -145,7 +145,12 @@ class Card:
     
     @typecheck
     def colors(self) -> str:
-        return " ".join( self.__card.get("colors") )
+        #print(" ".join( self.__card.get("colors") ))
+        colors = self.__card.get("colors")
+        if not colors:
+            return ""
+        else:
+            return " ".join(colors)
     
     @typecheck
     def rarity(self) -> str:
@@ -153,11 +158,23 @@ class Card:
     
     @typecheck
     def power(self) -> int:
-        return int(self.__card.get("power"))
+        power = self.__card.get("power")
+        if not power:
+            return 0
+        elif not power.isnumeric():
+            return 0
+        else:
+            return int(power)
     
     @typecheck
     def toughness(self) -> int:
-        return int(self.__card.get("toughness"))
+        toughness = self.__card.get("toughness")
+        if not toughness:
+            return 0
+        elif not toughness.isnumeric():
+            return 0
+        else:
+            return int(toughness)
     
     @typecheck
     def legalities(self) -> str:
@@ -173,11 +190,19 @@ class Card:
     
     @typecheck
     def text(self) -> str:
-        return self.__card.get("text")
+        text = self.__card.get("text")
+        if not text:
+            return ""
+        else:
+            return text
     
     @typecheck
     def flavor(self) -> str:
-        return self.__card.get("flavor")
+        flavor = self.__card.get("flavor")
+        if not flavor:
+            return ""
+        else:
+            return flavor
     
     @typecheck
     def get(self, key: one_of(Constants.ALL_KEYS)) -> either(int, str):

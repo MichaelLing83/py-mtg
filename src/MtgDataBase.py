@@ -89,6 +89,7 @@ class MtgDataBase:
         
         @return (list): list of Card objects.
         '''
+        #print(condition.get_conditions())
         cards = list()
         for name in MtgDataBase.get_all_card_names():
             card = MtgDataBase.get_card_by_name(name)
