@@ -69,7 +69,6 @@ class TestMtgDataBase(unittest.TestCase):
         cards = MtgDataBase.get_cards(condition)
         self.assertGreater(len(cards), 0)
     
-    
 
 if __name__ == '__main__':
     unittest.main()

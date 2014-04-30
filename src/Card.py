@@ -66,8 +66,7 @@ class Card:
         
         @return (int): CMC of the card.
         '''
-        __cmc = self.__card.get("cmc")
-        if __cmc:
+        if self.__card.get("cmc"):
             return int(self.__card.get("cmc"))
         else:
             return 0

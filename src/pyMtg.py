@@ -1,4 +1,4 @@
-'''
+﻿'''
 Known bugs:
     1. On Windows, please save deck file as "UTF-8 without BOM", otherwise you get problem in
         console like: ValueError: invalid literal for int() with base 10: '\ufeff'
@@ -8,13 +8,16 @@ Known bugs:
 import cmd
 import os
 import Constants
-from CardCondition import CardCondition
 from MtgDataBase import MtgDataBase
+from CardCondition import CardCondition
 from Utilities import MtgException
 
 class pyMtg(cmd.Cmd):
     '''
     Command Line Interface for MTG game.
+    
+    Note: for verification purpose, use onecmd() method and last_cli_output attribute to get output of
+    last command.
     '''
     
     prompt = "Magic$ "
@@ -29,8 +32,9 @@ class pyMtg(cmd.Cmd):
         self.last_search_result = None
         self.last_search_result_index = 0
         self.seperator_line = "="*20
-    
-    def do_pcard(self, line):
+<<<<<<< .mine    
+=======    def do_search(self, line):
+>>>>>>> .theirs    def do_pcard(self, line):
         '''
         Print a Card from search result. Note that you need to do a search first,
         otherwise nothing will be printed.
@@ -61,8 +65,9 @@ class pyMtg(cmd.Cmd):
                 " %d/%d "%(self.last_search_result_index+1,num_of_results),
                 self.seperator_line)
         
-    
-    def do_search(self, line):
+<<<<<<< .mine    
+=======        except MtgException as err:
+>>>>>>> .theirs    def do_search(self, line):
         '''
         Search cards from MTG data base by given condition.
         
@@ -98,17 +103,19 @@ class pyMtg(cmd.Cmd):
         except Exception as err:
             print(err)
             return
-    
-    def do_version(self, line):
+<<<<<<< .mine    
+=======>>>>>>> .theirs    def do_version(self, line):
         '''
         Print version of the software.
         '''
         print(Constants.VERSION)
+        self.last_cli_output = Constants.VERSION
     
     def do_EOF(self, line):
         '''
         End of program.
         '''
+        self.last_cli_output = "EOF"
         return True
     
     def do_shell(self, line):

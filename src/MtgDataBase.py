@@ -70,7 +70,7 @@ class MtgDataBase:
         
         @format (str): Must be one of Constants.ALL_FORMATS
         
-        @return (list): list of dict objects, each of which represents a card.
+        @return (list): list of Card objects.
         '''
         cards = list()
         for name in MtgDataBase.get_all_card_names():
@@ -83,16 +83,16 @@ class MtgDataBase:
     @typecheck
     def get_cards(cls, condition: CardCondition) -> list:
         '''
-        Return a list of cards meeting the given condition.
+        Return a list of cards meeting given condition.
         
-        @condition (CardCondition): condition used to match
+        @condition (CardCondition): condition used to search.
         
         @return (list): list of Card objects.
         '''
-        #print(condition.get_conditions())
         cards = list()
         for name in MtgDataBase.get_all_card_names():
             card = MtgDataBase.get_card_by_name(name)
             if condition.check_card(card):
                 cards.append(card)
         return cards
+

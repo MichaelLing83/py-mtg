@@ -41,6 +41,9 @@ class CardCondition:
         
         @return (bool): True or False
         '''
+        #print("value_type: %s" % value_type)
+        #print("op: %s" % op)
+        #print("value: %s" % value)
         self.__condition_list.append( (value_type, op, value) )
     
     @typecheck
