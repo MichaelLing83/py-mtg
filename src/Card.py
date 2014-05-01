@@ -105,7 +105,8 @@ class Card:
         keys.sort()
         for key in ('name', 'type', 'mana_cost', 'cmc', 'rarity'):
             result.append(key + ":\t" + str(self.get(key)))
-        result.append("power/toughness:\t%d/%d" % (self.get("power"), self.get("toughness")))
+        if "Creature" in self.get("type"):
+            result.append("power/toughness:\t%d/%d" % (self.get("power"), self.get("toughness")))
         result.append("text:\t%s" % self.get("text"))
         return "\n".join(result)
         #for key in self.__card.keys():

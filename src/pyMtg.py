@@ -28,6 +28,7 @@ class pyMtg(cmd.Cmd):
         self.last_cli_output = None
         self.last_search_result = None
         self.last_search_result_index = 0
+        self.seperator_line = "="*20
     
     def do_pcard(self, line):
         '''
@@ -46,12 +47,19 @@ class pyMtg(cmd.Cmd):
             self.onecmd("help pcard")
             return
         if self.last_search_result:
+            num_of_results = len(self.last_search_result)
             self.last_search_result_index = {
                 '': lambda: self.last_search_result_index,
-                'n': lambda: (self.last_search_result_index+1)%len(self.last_search_result),
-                'p': lambda: (self.last_search_result_index-1)%len(self.last_search_result),
+                'n': lambda: (self.last_search_result_index+1)%num_of_results,
+                'p': lambda: (self.last_search_result_index-1)%num_of_results,
             }[line]()
+            print(self.seperator_line,
+                " %d/%d "%(self.last_search_result_index+1,num_of_results),
+                self.seperator_line)
             print(self.last_search_result[self.last_search_result_index].to_str())
+            print(self.seperator_line,
+                " %d/%d "%(self.last_search_result_index+1,num_of_results),
+                self.seperator_line)
         
     
     def do_search(self, line):
