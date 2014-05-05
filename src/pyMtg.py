@@ -32,9 +32,8 @@ class pyMtg(cmd.Cmd):
         self.last_search_result = None
         self.last_search_result_index = 0
         self.seperator_line = "="*20
-<<<<<<< .mine    
-=======    def do_search(self, line):
->>>>>>> .theirs    def do_pcard(self, line):
+    
+    def do_pcard(self, line):
         '''
         Print a Card from search result. Note that you need to do a search first,
         otherwise nothing will be printed.
@@ -64,10 +63,8 @@ class pyMtg(cmd.Cmd):
             print(self.seperator_line,
                 " %d/%d "%(self.last_search_result_index+1,num_of_results),
                 self.seperator_line)
-        
-<<<<<<< .mine    
-=======        except MtgException as err:
->>>>>>> .theirs    def do_search(self, line):
+
+    def do_search(self, line):
         '''
         Search cards from MTG data base by given condition.
         
@@ -103,8 +100,8 @@ class pyMtg(cmd.Cmd):
         except Exception as err:
             print(err)
             return
-<<<<<<< .mine    
-=======>>>>>>> .theirs    def do_version(self, line):
+
+    def do_version(self, line):
         '''
         Print version of the software.
         '''
