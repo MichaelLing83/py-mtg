@@ -25,8 +25,13 @@ class TestPyMtg(unittest.TestCase):
         self.pymtg.onecmd("version")
         self.assertEqual(self.pymtg.last_cli_output, Constants.VERSION)
     
-    
-        
+    def test_deck_load(self):
+        '''
+        Verify deck_load command.
+        '''
+        self.pymtg.onecmd("deck_load BW_Token_Modem.deck")
+        self.assertNotIn("Unknown syntax", self.pymtg.last_cli_output)
+        self.assertNotIn("Loading failed for deck", self.pymtg.last_cli_output)
 
 if __name__ == '__main__':
     unittest.main()

@@ -11,6 +11,8 @@ import Constants
 from MtgDataBase import MtgDataBase
 from CardCondition import CardCondition
 from Utilities import MtgException
+from Utilities import go_to_proj_root
+from Deck import Deck
 
 class pyMtg(cmd.Cmd):
     '''
@@ -27,11 +29,20 @@ class pyMtg(cmd.Cmd):
     misc_header = 'misc_header'
     
     def __init__(self):
+        go_to_proj_root()
         cmd.Cmd.__init__(self)
         self.last_cli_output = None
         self.last_search_result = None
         self.last_search_result_index = 0
         self.seperator_line = "="*20
+        self.deck = None
+    
+    def default(self, line):
+        '''
+        Default callback when a command is not recognized.
+        '''
+        self.last_cli_output = "***Unknown syntax: %s" % line
+        print(self.last_cli_output)
     
     def do_pcard(self, line):
         '''
@@ -125,6 +136,20 @@ class pyMtg(cmd.Cmd):
             self.last_cli_output = output
         except:
             print("Shell command failed: %s" % line)
+    
+    def do_deck_load(self, line):
+        '''
+        Load a deck.
+        '''
+        file_name = line.strip()
+        try:
+            self.deck = Deck(file_name="./data/%s"%file_name)
+        except:
+            self.last_cli_output = "Loading failed for deck: %s" % file_name
+            print(self.last_cli_output)
+        else:
+            self.last_cli_output = "Deck \"%s\" is loaded" % file_name
+            print(self.last_cli_output)
 
 if __name__ == '__main__':
     pyMtg().cmdloop()
