@@ -2,6 +2,7 @@
 from typecheck import *
 from MtgDataBase import MtgDataBase
 from Utilities import MtgException
+from Utilities import guarantee
 from CardCondition import CardCondition
 
 class Deck:
@@ -70,28 +71,33 @@ class Deck:
                 is_main_deck = False
             else:
                 num_of_card = int(line[0])
-                assert(num_of_card > 0 and num_of_card < 5)
+                guarantee(num_of_card > 0 and num_of_card < 5)
                 name_of_card = line[1:].strip()
                 #print("line = %s" % line)
                 #print("name_of_card = %s" % name_of_card)
-                assert MtgDataBase.get_card_by_name(name_of_card) != None, "Card name couldn't be found: %s" % name_of_card
+                guarantee(MtgDataBase.get_card_by_name(name_of_card) != None,
+                    "Card name couldn't be found: %s" % name_of_card)
                 if is_main_deck:
                     # add to main deck
-                    assert name_of_card not in self.__main_deck_dict.keys(), "Card '%s' is defined multiple times for main deck!" % name_of_card
+                    guarantee(name_of_card not in self.__main_deck_dict.keys(),
+                        "Card '%s' is defined multiple times for main deck!" % name_of_card)
                     self.__main_deck_dict[name_of_card] = num_of_card
                 else:
                     # add to side board
-                    assert name_of_card not in self.__side_board_dict.keys(), "Card '%s' is defined multiple times for side board!" % name_of_card
+                    guarantee(name_of_card not in self.__side_board_dict.keys(),
+                        "Card '%s' is defined multiple times for side board!" % name_of_card)
                     self.__side_board_dict[name_of_card] = num_of_card
         # check the deck meets basic requirements
         c = 0
         for card_number in self.__main_deck_dict.values():
             c += card_number
-        assert c >= Constants.MAIN_DECK_MIN_SIZE, "Main deck needs at least %d cards, but it has only %d." % (Constants.MAIN_DECK_MIN_SIZE, c)
+        guarantee(c >= Constants.MAIN_DECK_MIN_SIZE,
+            "Main deck needs at least %d cards, but it has only %d." % (Constants.MAIN_DECK_MIN_SIZE, c))
         c = 0
         for card_number in self.__side_board_dict.values():
             c += card_number
-        assert c <= Constants.SIDE_BOARD_MAX_SIZE, "Side board can have at most %d cards, but it has %d." % (Constants.SIDE_BOARD_MAX_SIZE, c)
+        guarantee(c <= Constants.SIDE_BOARD_MAX_SIZE,
+            "Side board can have at most %d cards, but it has %d." % (Constants.SIDE_BOARD_MAX_SIZE, c))
     
     @typecheck
     def count(self, condition: CardCondition) -> int:

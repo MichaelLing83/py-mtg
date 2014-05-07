@@ -1,6 +1,6 @@
 ﻿import unittest
 from typecheck import *
-from Utilities import garantee
+from Utilities import guarantee
 
 class TestTypecheck(unittest.TestCase):
 
@@ -22,8 +22,8 @@ class TestTypecheck(unittest.TestCase):
         '''
         Verify that Card can be initialized.
         '''
-        garantee(True, "Always true")
-        self.assertRaises(InputParameterError, garantee, ("x", "y"))
+        guarantee(True, "Always true")
+        self.assertRaises(InputParameterError, guarantee, ("x", "y"))
     
     
         

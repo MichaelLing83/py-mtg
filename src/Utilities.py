@@ -26,7 +26,7 @@ class MtgException(Exception):
         return repr(self.value)
 
 @typecheck
-def garantee(true_condition: bool, message: str) -> nothing:
+def guarantee(true_condition: bool, message: str="") -> nothing:
     '''
     Raise an exception with message if true_condition is not met.
     
