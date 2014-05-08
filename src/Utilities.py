@@ -1,6 +1,7 @@
 ﻿from typecheck import *
 import os
 import Constants
+import atexit
 
 def go_to_proj_root():
     cwd = os.getcwd()
@@ -52,39 +53,71 @@ class MtgLogger:
     LOG_LEVEL_CRITICAL = 1  # A serious error, indicating that the program itself may be unable to
                             # continue running.
     ALL_LOG_LEVELS = (LOG_LEVEL_DEBUG, LOG_LEVEL_INFO, LOG_LEVEL_WARNING, LOG_LEVEL_ERROR, LOG_LEVEL_CRITICAL)
+    OUTPUT_TO_CONSOLE = 0
+    OUTPUT_TO_FILE = 1
+    OUTPUT_OPTIONS = (OUTPUT_TO_CONSOLE, OUTPUT_TO_FILE)
+    
+    log_level = LOG_LEVEL_ERROR
+    output_option = OUTPUT_TO_FILE
+    log_file_name = "./mtg_log.txt"
+    try:
+        go_to_proj_root()
+        log_file = open(log_file_name, 'w', encoding="utf8")
+    except Exception as err:
+        print(err)
+        print("Cannot create log file, print to console instead.")
+        output_option = OUTPUT_TO_CONSOLE
     
     @typecheck
-    def __init__(self, log_level: one_of(ALL_LOG_LEVELS)) -> nothing:
+    def __init__(self, *args, **kargs) -> nothing:
         '''
-        Higher logging level enabled more traces.
-        
-        @log_level (MtgLogger.LOG_LEVEL_*): set logging level of this MtgLogger object.
-        
-        @return (None)
+        This class should never be instantiated.
         '''
-        self.log_level = log_level
+        raise MtgException("MtgLogger class should never be initialized!")
     
+    @classmethod
+    def cleanup(cls):
+        try:
+            log_file.close()
+        except:
+            pass
+    
+    @classmethod
     @typecheck
-    def debug(message: str) -> nothing:
+    def __print(cls, message: str) -> nothing:
+        if output_option == OUTPUT_TO_CONSOLE:
+            print(message)
+        elif output_option == OUTPUT_TO_FILE:
+            log_file.write(message + "\n")
+    
+    @classmethod
+    @typecheck
+    def debug(cls, message: str) -> nothing:
         if (self.log_level >= MtgLogger.LOG_LEVEL_DEBUG):
-            print(message)
+            __print(message)
     
+    @classmethod
     @typecheck
-    def info(message: str) -> nothing:
+    def info(cls, message: str) -> nothing:
         if (self.log_level >= MtgLogger.LOG_LEVEL_INFO):
-            print(message)
+            __print(message)
     
+    @classmethod
     @typecheck
-    def warning(message: str) -> nothing:
+    def warning(cls, message: str) -> nothing:
         if (self.log_level >= MtgLogger.LOG_LEVEL_WARNING):
-            print(message)
+            __print(message)
     
+    @classmethod
     @typecheck
-    def error(message: str) -> nothing:
+    def error(cls, message: str) -> nothing:
         if (self.log_level >= MtgLogger.LOG_LEVEL_ERROR):
-            print(message)
+            __print(message)
     
+    @classmethod
     @typecheck
-    def critical(message: str) -> nothing:
+    def critical(cls, message: str) -> nothing:
         if (self.log_level >= MtgLogger.LOG_LEVEL_CRITICAL):
-            print(message)
+            __print(message)
+
+atexit.register(MtgLogger.cleanup)
