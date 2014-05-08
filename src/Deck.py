@@ -4,11 +4,67 @@ from MtgDataBase import MtgDataBase
 from Utilities import MtgException
 from Utilities import guarantee
 from CardCondition import CardCondition
+from itertools import repeat
+from copy import copy
+from random import seed
+from random import shuffle as random_shuffle
+from datetime import datetime
+from Card import Card
+
+class Deck:
+    pass
 
 class Deck:
     '''
     Representing a MTG deck, with facilitating methods.
     '''
+    
+    class Library:
+        '''
+        Representing a MTG library in a game.
+        '''
+        @typecheck
+        def __init__(self, deck) -> nothing:
+            '''
+            '''
+            self.__deck = deck
+            self.__library = copy(self.__deck.main_deck())
+            # init random internal state with current time
+            seed(datetime.timestamp(datetime.now()))
+        
+        @typecheck
+        def serialize(self) -> list_of(str):
+            '''
+            Return a list of card names that represent this library.
+            '''
+            card_names = list()
+            for card in self.__library:
+                card_names.append(card.name())
+            return card_names
+        
+        @typecheck
+        def shuffle(self) -> nothing:
+            '''
+            Shuffle library.
+            '''
+            random_shuffle(self.__library)
+        
+        @typecheck
+        def depth(self) -> int:
+            '''
+            Number of cards left in library.
+            '''
+            return len(self.__library)
+        
+        @typecheck
+        def look_at(self, index: int) -> Card:
+            '''
+            Look at a card by index from library top. Note that this card will still be in library,
+            it will not be drawn away.
+            '''
+            guarantee(index>=0 and index<self.depth(),
+                "Failed to look at card with index(%d), library depth(%d)" % (index, self.depth()))
+            return self.__library[index]
     
     @typecheck
     def __init__(self, deck_list_str: str="", file_name: str="") -> nothing:
@@ -98,6 +154,8 @@ class Deck:
             c += card_number
         guarantee(c <= Constants.SIDE_BOARD_MAX_SIZE,
             "Side board can have at most %d cards, but it has %d." % (Constants.SIDE_BOARD_MAX_SIZE, c))
+        
+        self.library = Deck.Library(self)
     
     @typecheck
     def count(self, condition: CardCondition) -> int:
@@ -113,3 +171,17 @@ class Deck:
             if condition.check_card(MtgDataBase.get_card_by_name(card_name)):
                 c += self.__main_deck_dict[card_name]
         return c
+    
+    @typecheck
+    def main_deck(self) -> list_of(Card):
+        '''
+        Return a list of cards that represent the Main Deck. Note that if you have 4 copies of a
+        card in main deck, then you get 1 Card object for each of them (though they could be
+        referring to the same object).
+        '''
+        main_deck = list()
+        for card_name in self.__main_deck_dict.keys():
+            main_deck.extend(list(
+                repeat(MtgDataBase.get_card_by_name(card_name), self.__main_deck_dict[card_name])
+                ))
+        return main_deck

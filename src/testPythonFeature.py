@@ -57,6 +57,35 @@ class TestPythonFeature(unittest.TestCase):
         a = Resource()
         b = Resource()
         self.assertIs(a, b)
+    
+    def test_nested_classes(self):
+        '''
+        See if we can define a class within another class.
+        '''
+        class A:
+            class B:
+                def __init__(self):
+                    self.bbb = "bbb"
+                def get_something_in_A(self):
+                    return self.c
+            def __init__(self):
+                self.b = A.B()
+                self.c = "ccc"
+        a = A()
+        #print(a.b)
+        self.assertEqual(a.b.bbb, "bbb")
+        self.assertRaises(AttributeError, a.b.get_something_in_A)
+    
+    def test_modify_class_def(self):
+        '''
+        See if we can modify a class definition (or append to it).
+        '''
+        class A:
+            pass
+        class A:
+            def __init__(self):
+                a = "AAA"
+        a = A()
 
 if __name__ == '__main__':
     unittest.main()

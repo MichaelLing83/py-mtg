@@ -1,4 +1,5 @@
 ﻿import unittest
+from MtgDataBase import MtgDataBase
 from Deck import Deck
 from CardCondition import CardCondition
 
@@ -66,6 +67,26 @@ Sideboard
         self.assertEqual(self.deck.count(CardCondition("type", "have", "Enchantment")), 4)
         self.assertEqual(self.deck.count(CardCondition("type", "have", "Artifact")), 5)
         self.assertEqual(self.deck.count(CardCondition("type", "have", "Sorcery")), 14)
+    
+    def test_main_deck(self):
+        '''
+        Get a list of cards that represent the Main Deck.
+        '''
+        main_deck = self.deck.main_deck()
+        self.assertIsInstance(main_deck, list)
+        self.assertEqual(len(main_deck), 60)
+    
+    def test_shuffle_serialize_get_card(self):
+        '''
+        Verify that a library (by default the Main Deck part) can do shuffle, serialize to a card
+        name list, and look at a card by index from library top.
+        '''
+        self.deck.library.shuffle()
+        serialized_library = self.deck.library.serialize()
+        for i in range(self.deck.library.depth()):
+            self.assertEqual(MtgDataBase.get_card_by_name(serialized_library[i]),
+                self.deck.library.look_at(i))
+        # shuffle again and the sequence of library should be different
 
 if __name__ == '__main__':
     unittest.main()
