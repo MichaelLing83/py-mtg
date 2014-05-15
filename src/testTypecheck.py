@@ -24,9 +24,7 @@ class TestTypecheck(unittest.TestCase):
         '''
         guarantee(True, "Always true")
         self.assertRaises(InputParameterError, guarantee, ("x", "y"))
-    
-    
-        
 
 if __name__ == '__main__':
     unittest.main()
+    

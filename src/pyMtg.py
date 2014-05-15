@@ -20,6 +20,9 @@ class pyMtg(cmd.Cmd):
     
     Note: for verification purpose, use onecmd() method and last_cli_output attribute to get output of
     last command.
+    
+    All command handling methods (e.g. do_*) should only update self.last_cli_output, then postcmd()
+    hook will print it to console.
     '''
     
     prompt = "Magic$ "
@@ -42,7 +45,18 @@ class pyMtg(cmd.Cmd):
         Default callback when a command is not recognized.
         '''
         self.last_cli_output = "***Unknown syntax: %s" % line
+    
+    def postcmd(self, stop, line):
+        '''
+        Hook method executed just after a command dispatch is finished. This method is a stub in Cmd;
+        it exists to be overridden by subclasses. line is the command line which was executed, and 
+        stop is a flag which indicates whether execution will be terminated after the call to postcmd(); 
+        this will be the return value of the onecmd() method. The return value of this method will 
+        be used as the new value for the internal flag which corresponds to stop; returning false 
+        will cause interpretation to continue.
+        '''
         print(self.last_cli_output)
+        return stop
     
     def do_pcard(self, line):
         '''
@@ -64,16 +78,16 @@ class pyMtg(cmd.Cmd):
             num_of_results = len(self.last_search_result)
             self.last_search_result_index = {
                 '': lambda: self.last_search_result_index,
-                'n': lambda: (self.last_search_result_index+1)%num_of_results,
-                'p': lambda: (self.last_search_result_index-1)%num_of_results,
+                'n': lambda: (self.last_search_result_index + 1)%num_of_results,
+                'p': lambda: (self.last_search_result_index - 1)%num_of_results,
             }[line]()
-            print(self.seperator_line,
-                " %d/%d "%(self.last_search_result_index+1,num_of_results),
-                self.seperator_line)
-            print(self.last_search_result[self.last_search_result_index].to_str())
-            print(self.seperator_line,
-                " %d/%d "%(self.last_search_result_index+1,num_of_results),
-                self.seperator_line)
+            self.last_cli_output = self.seperator_line
+            self.last_cli_output += " %d/%d " % (self.last_search_result_index + 1,num_of_results)
+            self.last_cli_output += self.seperator_line + "\n"
+            self.last_cli_output += self.last_search_result[self.last_search_result_index].to_str()
+            self.last_cli_output += "\n" + self.seperator_line
+            self.last_cli_output += " %d/%d " % (self.last_search_result_index + 1,num_of_results)
+            self.last_cli_output += self.seperator_line
 
     def do_search(self, line):
         '''
@@ -101,29 +115,28 @@ class pyMtg(cmd.Cmd):
                 value = ' '.join(one_condition[value_start_index:])
                 card_condition.add(key, op, value)
         except Exception as err:
-            print(err)
+            self.last_cli_output = str(err)
             return
         # search
         try:
             self.last_search_result = MtgDataBase.get_cards(card_condition)
             self.last_search_result_index = 0
-            print("Found %d matching cards." % len(self.last_search_result))
+            self.last_cli_output = "Found %d matching cards." % len(self.last_search_result)
         except Exception as err:
-            print(err)
+            self.last_cli_output = str(err)
             return
 
     def do_version(self, line):
         '''
         Print version of the software.
         '''
-        print(Constants.VERSION)
         self.last_cli_output = Constants.VERSION
     
     def do_EOF(self, line):
         '''
         End of program.
         '''
-        self.last_cli_output = "EOF"
+        self.last_cli_output = "pyMtg ended."
         return True
     
     def do_shell(self, line):
@@ -131,11 +144,9 @@ class pyMtg(cmd.Cmd):
         Run a shell command.
         '''
         try:
-            output = os.popen(line).read()
-            print(output)
-            self.last_cli_output = output
+            self.last_cli_output = os.popen(line).read()
         except:
-            print("Shell command failed: %s" % line)
+            self.last_cli_output = "Shell command failed: %s" % line
     
     def do_deck_load(self, line):
         '''
@@ -146,10 +157,18 @@ class pyMtg(cmd.Cmd):
             self.deck = Deck(file_name="./data/%s"%file_name)
         except:
             self.last_cli_output = "Loading failed for deck: %s" % file_name
-            print(self.last_cli_output)
         else:
             self.last_cli_output = "Deck \"%s\" is loaded" % file_name
-            print(self.last_cli_output)
+    
+    def do_deck_shuffle(self, line):
+        '''
+        Shuffle the loaded deck.
+        '''
+        if not self.deck:
+            self.last_cli_output = "No deck is loaded. You need to deck_load a deck first!"
+        else:
+            self.deck.library.shuffle()
+            self.last_cli_output = "The deck is shuffled."
 
 if __name__ == '__main__':
     pyMtg().cmdloop()

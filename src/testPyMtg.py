@@ -32,6 +32,14 @@ class TestPyMtg(unittest.TestCase):
         self.pymtg.onecmd("deck_load BW_Token_Modem.deck")
         self.assertNotIn("Unknown syntax", self.pymtg.last_cli_output)
         self.assertNotIn("Loading failed for deck", self.pymtg.last_cli_output)
+    
+    def test_deck_shuffle(self):
+        '''
+        Verify deck_shuffle command.
+        '''
+        self.pymtg.onecmd("deck_load BW_Token_Modem.deck")
+        self.pymtg.onecmd("deck_shuffle")
+        self.assertNotIn("Unknown syntax", self.pymtg.last_cli_output)
 
 if __name__ == '__main__':
     unittest.main()
