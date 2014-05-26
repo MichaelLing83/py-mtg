@@ -23,4 +23,4 @@ ALL_COLORS = ("Black", "White", "Red", "Green", "Blue", "Colorless")
 MAIN_DECK_MIN_SIZE = 60
 SIDE_BOARD_MAX_SIZE = 15
 MTG_JSON_FILE_PATH = "./data/AllSets-x.json"
-PROJECT_ROOT = "py-mtg"
+PROJECT_ROOT = "pymtg"
