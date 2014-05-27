@@ -1,0 +1,14 @@
+# all lines starting with '#' is omitted as comments.
+# note that there cannot be any empty line within a section
+
+[dimension]
+# field dimension
+502, 502
+
+[lines]
+# lines section
+# providing line coordinates as edges or obstacles
+2, 2, 502, 2
+2, 2, 2, 502
+502, 2, 502, 502
+2, 502, 502, 502

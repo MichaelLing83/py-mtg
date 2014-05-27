@@ -1,15 +1,23 @@
 ﻿'''
 '''
 
+from Field import Field
+
 if __name__ == '__main__':
     from tkinter import Tk
     from tkinter import Canvas
     from tkinter import mainloop
     
+    import os
+    print(os.getcwd())
+    field = Field("./src/field_rectangle.txt")
+    
     master = Tk()
-    canvas = Canvas(master, width=200, height=200)
+    canvas = Canvas(master, width=field.width, height=field.height)
     canvas.pack()
-    r = canvas.create_rectangle(0, 0, 20, 20, fill="blue")
+    for line in field.get_lines():
+        canvas.create_line(*line)
+    r = canvas.create_rectangle(1, 1, 21, 21, fill="blue")
     
     def ppp():
         canvas.move(r, 5, 5)
