@@ -2,6 +2,8 @@
 '''
 
 from Utilities import guarantee
+from Constants import Direction
+from Car import Car
 
 class Field:
     '''
@@ -26,7 +28,7 @@ class Field:
             elif line[0] == '[':
                 # this is section name
                 current_section = line[1:-1]
-                print(current_section)
+                #print(current_section)
                 continue
             else:
                 # this gives some values
@@ -37,9 +39,14 @@ class Field:
                 elif current_section == "lines":
                     line = line.split(',')
                     self.lines.append( (int(line[0]), int(line[1]), int(line[2]), int(line[3])) )
-        print(self.width)
-        print(self.height)
-        print(self.lines)
+        #print(self.width)
+        #print(self.height)
+        #print(self.lines)
+        # init the car
+        self.car = Car()
+        self.car_direction = Direction.S
+        self.car_pos_x = 0
+        self.car_pos_y = 0
         
     def add_line(self, start_x, start_y, end_x, end_y):
         '''
